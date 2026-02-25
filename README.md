@@ -2,7 +2,7 @@
 
 Herramienta interactiva para practicar la conjugación de verbos regulares en español. Pensada para alumnos de ELE (Español como Lengua Extranjera) y sus profesores.
 
-**[→ Abrir la aplicación](https://TU-USUARIO.github.io/verbos-practica/)**
+**[→ Abrir la aplicación](https://marianocc.github.io/verbos-practica/)**
 
 ![screenshot](screenshot.png)
 
