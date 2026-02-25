@@ -1,0 +1,557 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Verbos regulares — práctica</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #f0ece4;
+      --card: #faf8f4;
+      --border: #d8d2c4;
+      --border-light: #e8e3d8;
+      --text: #2c2416;
+      --text-muted: #8a7e6b;
+      --accent: #b85c2f;
+      --accent-light: #f4e6db;
+      --accent-hover: #a04e25;
+      --green: #3a7d44;
+      --green-bg: #e8f5ea;
+      --red: #c0392b;
+      --red-bg: #fce8e6;
+      --yellow: #d4a017;
+      --yellow-bg: #fef9e7;
+      --blue: #2563a8;
+      --blue-bg: #e0ecf8;
+      --purple: #7c3aab;
+      --purple-bg: #f0e6f6;
+      --mono: 'DM Mono', ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+      --sans: 'DM Sans', system-ui, -apple-system, sans-serif;
+      --radius: 12px;
+      --radius-sm: 8px;
+      --shadow: 0 1px 3px rgba(44,36,22,.06), 0 6px 24px rgba(44,36,22,.08);
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: var(--sans); background: var(--bg); color: var(--text); min-height: 100vh; -webkit-font-smoothing: antialiased; }
+    .wrap { max-width: 1000px; margin: 0 auto; padding: 24px 16px 48px; }
+    header { text-align: center; margin-bottom: 28px; }
+    header h1 { font-size: 28px; font-weight: 700; letter-spacing: -0.5px; margin-bottom: 6px; }
+    header p { color: var(--text-muted); font-size: 14px; max-width: 520px; margin: 0 auto; line-height: 1.5; }
+    .layout { display: grid; gap: 20px; grid-template-columns: 300px 1fr; }
+    @media (max-width: 780px) { .layout { grid-template-columns: 1fr; } }
+    .card { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); padding: 20px; box-shadow: var(--shadow); }
+    .card-title { font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 1.2px; color: var(--text-muted); margin-bottom: 14px; }
+    textarea, select, input[type="text"] { width: 100%; padding: 10px 12px; border-radius: var(--radius-sm); border: 1px solid var(--border); outline: none; font-size: 14px; background: #fff; color: var(--text); transition: border-color .2s; }
+    textarea { font-family: var(--mono); font-size: 13px; min-height: 100px; resize: vertical; line-height: 1.6; }
+    textarea:focus, select:focus, input[type="text"]:focus { border-color: var(--accent); }
+    select { font-family: var(--sans); font-size: 13px; cursor: pointer; }
+    .btn { display: inline-flex; align-items: center; gap: 6px; padding: 8px 14px; border-radius: var(--radius-sm); border: 1px solid var(--border); background: #fff; cursor: pointer; font-family: var(--sans); font-size: 13px; font-weight: 500; color: var(--text); transition: all .15s; white-space: nowrap; }
+    .btn:hover { background: var(--bg); border-color: var(--accent); }
+    .btn:active { transform: scale(.97); }
+    .btn.primary { background: var(--accent); color: #fff; border-color: var(--accent); }
+    .btn.primary:hover { background: var(--accent-hover); }
+    .btn.sm { padding: 5px 10px; font-size: 12px; }
+    .btn.danger { color: var(--red); border-color: var(--red); }
+    .btn.danger:hover { background: var(--red-bg); }
+    .btn-row { display: flex; gap: 8px; flex-wrap: wrap; }
+    .toggle-group { display: flex; gap: 0; background: var(--bg); border-radius: var(--radius-sm); padding: 3px; border: 1px solid var(--border-light); }
+    .toggle-group label { flex: 1; text-align: center; padding: 7px 10px; font-size: 12px; font-weight: 500; border-radius: 6px; cursor: pointer; transition: all .2s; color: var(--text-muted); user-select: none; }
+    .toggle-group input { display: none; }
+    .toggle-group input:checked + label { background: #fff; color: var(--text); box-shadow: 0 1px 3px rgba(44,36,22,.1); }
+    .check-pill { display: flex; align-items: center; gap: 8px; padding: 8px 12px; border-radius: var(--radius-sm); border: 1px solid var(--border-light); background: #fff; font-size: 12px; color: var(--text-muted); cursor: pointer; transition: all .2s; user-select: none; }
+    .check-pill:has(input:checked) { border-color: var(--accent); background: var(--accent-light); color: var(--text); }
+    .check-pill input { accent-color: var(--accent); margin: 0; cursor: pointer; }
+
+    /* Login */
+    .login-screen { max-width: 400px; margin: 80px auto; text-align: center; }
+    .login-screen h2 { font-size: 24px; margin-bottom: 6px; }
+    .login-screen p { color: var(--text-muted); font-size: 14px; margin-bottom: 24px; }
+    .login-screen input { text-align: center; font-size: 18px; padding: 14px; font-weight: 600; }
+    .login-screen .btn { margin-top: 12px; width: 100%; justify-content: center; padding: 12px; font-size: 15px; }
+    .login-footer { margin-top: 16px; }
+
+    /* Practice */
+    .sidebar { display: flex; flex-direction: column; gap: 16px; }
+    .main { display: flex; flex-direction: column; gap: 16px; }
+    .stats-bar { display: flex; gap: 12px; flex-wrap: wrap; }
+    .stat { display: flex; align-items: center; gap: 8px; padding: 10px 16px; background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); box-shadow: var(--shadow); flex: 1; min-width: 120px; }
+    .stat-icon { width: 36px; height: 36px; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 18px; flex-shrink: 0; }
+    .stat-icon.score-icon { background: var(--accent-light); }
+    .stat-icon.streak-icon { background: var(--yellow-bg); }
+    .stat-icon.pct-icon { background: var(--green-bg); }
+    .stat-label { font-size: 11px; color: var(--text-muted); font-weight: 500; text-transform: uppercase; letter-spacing: .5px; }
+    .stat-value { font-size: 22px; font-weight: 700; line-height: 1; letter-spacing: -0.5px; }
+    .student-bar { display: flex; align-items: center; gap: 10px; padding: 10px 16px; background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); box-shadow: var(--shadow); font-size: 14px; }
+    .student-bar .name { font-weight: 700; }
+    .student-bar .logout { margin-left: auto; }
+    .question-card { position: relative; overflow: hidden; }
+    .question-card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px; background: linear-gradient(90deg, var(--accent), #d4873a); }
+    .q-badge { display: inline-block; padding: 3px 10px; border-radius: 99px; font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: .8px; margin-bottom: 12px; }
+    .q-badge.ind { background: var(--blue-bg); color: var(--blue); }
+    .q-badge.sub { background: var(--purple-bg); color: var(--purple); }
+    .q-badge.imp { background: var(--accent-light); color: var(--accent); }
+    .q-text { font-size: 18px; font-weight: 600; line-height: 1.45; margin-bottom: 4px; }
+    .q-text .verb-hl { color: var(--accent); font-style: italic; }
+    .q-detail { font-size: 13px; color: var(--text-muted); margin-bottom: 16px; }
+    .answer-row { display: flex; gap: 10px; align-items: stretch; }
+    .answer-row input { flex: 1; padding: 12px 16px; border-radius: var(--radius-sm); border: 2px solid var(--border); outline: none; font-family: var(--mono); font-size: 16px; background: #fff; color: var(--text); transition: border-color .2s, box-shadow .2s; }
+    .answer-row input:focus { border-color: var(--accent); box-shadow: 0 0 0 3px rgba(184,92,47,.12); }
+    .answer-row input.correct { border-color: var(--green); background: var(--green-bg); box-shadow: 0 0 0 3px rgba(58,125,68,.12); }
+    .answer-row input.wrong { border-color: var(--red); background: var(--red-bg); box-shadow: 0 0 0 3px rgba(192,57,43,.12); }
+    .actions-row { display: flex; gap: 8px; flex-wrap: wrap; align-items: center; margin-top: 12px; }
+    .actions-right { margin-left: auto; display: flex; gap: 8px; }
+    .feedback { margin-top: 12px; padding: 12px 16px; border-radius: var(--radius-sm); font-size: 14px; font-weight: 500; display: none; animation: slideIn .25s ease; }
+    @keyframes slideIn { from { opacity:0; transform:translateY(-6px); } to { opacity:1; transform:translateY(0); } }
+    .feedback.show { display: block; }
+    .feedback.ok { background: var(--green-bg); color: var(--green); border: 1px solid #b7ddb0; }
+    .feedback.bad { background: var(--red-bg); color: var(--red); border: 1px solid #f0c0ba; }
+    .feedback .correct-answer { font-family: var(--mono); font-weight: 700; font-size: 15px; }
+    .accent-bar { display: flex; gap: 6px; margin-top: 8px; flex-wrap: wrap; }
+    .accent-btn { width: 36px; height: 36px; display: flex; align-items: center; justify-content: center; border-radius: 8px; border: 1px solid var(--border); background: #fff; font-family: var(--mono); font-size: 15px; cursor: pointer; transition: all .15s; color: var(--text); }
+    .accent-btn:hover { border-color: var(--accent); background: var(--accent-light); }
+    .accent-btn:active { transform: scale(.92); }
+    .accent-mode-note { display: flex; align-items: center; gap: 6px; padding: 8px 12px; border-radius: var(--radius-sm); font-size: 12px; background: var(--yellow-bg); color: #8a6d11; border: 1px solid #e8d68a; }
+    .accent-mode-note.strict { background: var(--accent-light); color: var(--accent); border: 1px solid #dbb99a; }
+    .progress-wrap { height: 4px; background: var(--border-light); border-radius: 2px; margin-top: 14px; overflow: hidden; }
+    .progress-fill { height: 100%; background: linear-gradient(90deg, var(--accent), #d4873a); border-radius: 2px; transition: width .4s ease; width: 0%; }
+    .shortcuts { display: flex; gap: 16px; justify-content: center; flex-wrap: wrap; margin-top: 4px; }
+    .shortcut { font-size: 11px; color: var(--text-muted); display: flex; align-items: center; gap: 5px; }
+    kbd { display: inline-block; padding: 2px 6px; border-radius: 4px; border: 1px solid var(--border); background: #fff; font-family: var(--mono); font-size: 10px; box-shadow: 0 1px 0 var(--border); }
+    .missed-list { max-height: 220px; overflow-y: auto; display: flex; flex-direction: column; gap: 6px; }
+    .missed-item { display: flex; justify-content: space-between; align-items: center; padding: 8px 12px; background: #fff; border: 1px solid var(--border-light); border-radius: var(--radius-sm); font-size: 13px; gap: 12px; }
+    .missed-q { color: var(--text-muted); flex: 1; }
+    .missed-a { font-family: var(--mono); font-weight: 600; color: var(--red); white-space: nowrap; }
+    .missed-c { font-family: var(--mono); font-weight: 600; color: var(--green); white-space: nowrap; }
+    .missed-arrow { color: var(--text-muted); font-size: 11px; }
+
+    /* Dashboard */
+    .dash-wrap { max-width: 1100px; margin: 0 auto; padding: 24px 16px 48px; }
+    .dash-header { display: flex; align-items: center; gap: 12px; margin-bottom: 24px; flex-wrap: wrap; }
+    .dash-header h1 { flex: 1; font-size: 24px; }
+    .dash-summary { display: flex; gap: 12px; flex-wrap: wrap; margin-bottom: 24px; }
+    .dash-stat { flex: 1; min-width: 150px; padding: 16px 20px; background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); box-shadow: var(--shadow); }
+    .dash-stat .ds-label { font-size: 12px; color: var(--text-muted); font-weight: 500; text-transform: uppercase; letter-spacing: .5px; }
+    .dash-stat .ds-value { font-size: 28px; font-weight: 700; margin-top: 4px; letter-spacing: -0.5px; }
+    .table-wrap { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); box-shadow: var(--shadow); overflow-x: auto; }
+    table { width: 100%; border-collapse: collapse; font-size: 14px; }
+    thead th { text-align: left; padding: 12px 16px; font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: .8px; color: var(--text-muted); border-bottom: 2px solid var(--border); background: var(--bg); cursor: pointer; user-select: none; white-space: nowrap; }
+    thead th:hover { color: var(--text); }
+    tbody td { padding: 12px 16px; border-bottom: 1px solid var(--border-light); }
+    tbody tr:last-child td { border-bottom: none; }
+    tbody tr:hover { background: rgba(184,92,47,.03); }
+    .pct-bar { display: flex; align-items: center; gap: 8px; }
+    .pct-bar-track { flex: 1; height: 8px; background: var(--border-light); border-radius: 4px; overflow: hidden; min-width: 60px; }
+    .pct-bar-fill { height: 100%; border-radius: 4px; transition: width .3s; }
+    .pct-bar-fill.high { background: var(--green); }
+    .pct-bar-fill.mid { background: var(--yellow); }
+    .pct-bar-fill.low { background: var(--red); }
+    .pct-label { font-weight: 600; font-size: 13px; min-width: 38px; }
+    .weak-verb { display: inline-block; padding: 2px 8px; border-radius: 99px; background: var(--red-bg); color: var(--red); font-size: 11px; font-weight: 600; margin: 2px; }
+    .expand-btn { background: none; border: none; cursor: pointer; font-size: 14px; color: var(--text-muted); padding: 4px; transition: transform .2s; }
+    .expand-btn.open { transform: rotate(90deg); }
+    .detail-content { padding: 12px 16px 16px 40px; background: #faf8f4; }
+    .detail-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+    @media (max-width: 600px) { .detail-grid { grid-template-columns: 1fr; } }
+    .detail-section h4 { font-size: 12px; text-transform: uppercase; letter-spacing: .8px; color: var(--text-muted); margin-bottom: 8px; }
+    .session-item { display: flex; justify-content: space-between; align-items: center; padding: 6px 10px; background: #fff; border: 1px solid var(--border-light); border-radius: 6px; font-size: 12px; margin-bottom: 4px; }
+    .session-date { color: var(--text-muted); }
+    .dash-empty { text-align: center; padding: 60px 20px; color: var(--text-muted); }
+    .dash-empty h3 { font-size: 18px; color: var(--text); margin-bottom: 8px; }
+    .tab-bar { display: flex; gap: 0; border-bottom: 2px solid var(--border); margin-bottom: 20px; }
+    .tab-btn { padding: 10px 20px; font-family: var(--sans); font-size: 14px; font-weight: 500; border: none; background: none; cursor: pointer; color: var(--text-muted); border-bottom: 2px solid transparent; margin-bottom: -2px; transition: all .2s; }
+    .tab-btn:hover { color: var(--text); }
+    .tab-btn.active { color: var(--accent); border-bottom-color: var(--accent); }
+    .screen { display: none; }
+    .screen.active { display: block; }
+    @media (max-width: 480px) {
+      .stats-bar { flex-direction: column; }
+      .stat { min-width: unset; }
+      header h1 { font-size: 22px; }
+      .q-text { font-size: 16px; }
+      .actions-right { margin-left: 0; width: 100%; }
+      .actions-right .btn { flex: 1; justify-content: center; }
+      .dash-summary { flex-direction: column; }
+      table { font-size: 12px; }
+      thead th, tbody td { padding: 8px 10px; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- LOGIN -->
+<div class="screen active" id="screenLogin">
+  <div class="wrap">
+    <div class="login-screen">
+      <div class="card">
+        <h2>📚 Verbos regulares</h2>
+        <p>Escribe tu nombre para empezar a practicar. Tu progreso se guardará automáticamente.</p>
+        <input type="text" id="loginName" placeholder="Tu nombre…" autocomplete="off" />
+        <button class="btn primary" id="loginBtn">Empezar a practicar</button>
+      </div>
+      <div class="login-footer" style="margin-top:16px;">
+        <button class="btn" id="teacherBtn">🎓 Panel del profesor</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- PRACTICE -->
+<div class="screen" id="screenPractice">
+  <div class="wrap">
+    <header>
+      <h1>Práctica de verbos regulares</h1>
+      <p>Indicativo, subjuntivo, imperativo y tiempos compuestos.</p>
+    </header>
+    <div class="student-bar" style="margin-bottom:20px;">
+      <span>👤</span>
+      <span class="name" id="studentName"></span>
+      <span style="font-size:12px;color:var(--text-muted);" id="sessionInfo"></span>
+      <button class="btn sm logout" style="margin-left:auto;" id="logoutBtn">Salir</button>
+    </div>
+    <div class="layout">
+      <div class="sidebar">
+        <div class="card">
+          <div class="card-title">Verbos</div>
+          <textarea id="verbs" spellcheck="false" placeholder="Un verbo por línea…">amar
+temer
+partir
+hablar
+comer
+vivir</textarea>
+          <div class="btn-row" style="margin-top:10px;"><button class="btn sm" id="loadBtn">Recargar</button></div>
+          <select id="verbSelect" size="6" style="margin-top:10px;"></select>
+          <div style="font-size:11px;color:var(--text-muted);margin-top:6px;">Selecciona uno para fijarlo. Doble clic para aleatorio.</div>
+        </div>
+        <div class="card">
+          <div class="card-title">Modo</div>
+          <div class="toggle-group">
+            <input type="radio" name="modo" id="mInd" value="indicativo" checked><label for="mInd">Indicativo</label>
+            <input type="radio" name="modo" id="mSub" value="subjuntivo"><label for="mSub">Subjuntivo</label>
+            <input type="radio" name="modo" id="mImp" value="imperativo"><label for="mImp">Imperativo</label>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-title">Opciones</div>
+          <div style="display:flex;flex-direction:column;gap:8px;">
+            <label class="check-pill"><input type="checkbox" id="inclComp" checked> Tiempos compuestos</label>
+            <label class="check-pill"><input type="checkbox" id="subVar" checked> Variantes -ra / -se</label>
+            <label class="check-pill"><input type="checkbox" id="strictAccent" checked> Acentos estrictos</label>
+          </div>
+          <div class="accent-mode-note strict" id="accentNote" style="margin-top:10px;">⚠️ Los acentos cuentan: <strong>habló ≠ hablo</strong></div>
+        </div>
+      </div>
+      <div class="main">
+        <div class="stats-bar">
+          <div class="stat"><div class="stat-icon score-icon">📊</div><div><div class="stat-label">Puntuación</div><div class="stat-value" id="scoreVal">0/0</div></div></div>
+          <div class="stat"><div class="stat-icon streak-icon">🔥</div><div><div class="stat-label">Racha</div><div class="stat-value" id="streakVal">0</div></div></div>
+          <div class="stat"><div class="stat-icon pct-icon">✓</div><div><div class="stat-label">Acierto</div><div class="stat-value" id="pctVal">—</div></div></div>
+        </div>
+        <div class="card question-card">
+          <div id="qBadge" class="q-badge ind" style="display:none;"></div>
+          <div class="q-text" id="qText">Pulsa <strong>Siguiente</strong> para empezar.</div>
+          <div class="q-detail" id="qDetail"></div>
+          <div class="answer-row">
+            <input id="answer" type="text" autocomplete="off" spellcheck="false" placeholder="Escribe tu respuesta…" />
+            <button class="btn primary" id="checkBtn">Comprobar</button>
+          </div>
+          <div class="accent-bar">
+            <button class="accent-btn" data-char="á">á</button>
+            <button class="accent-btn" data-char="é">é</button>
+            <button class="accent-btn" data-char="í">í</button>
+            <button class="accent-btn" data-char="ó">ó</button>
+            <button class="accent-btn" data-char="ú">ú</button>
+            <button class="accent-btn" data-char="ñ">ñ</button>
+            <button class="accent-btn" data-char="ü">ü</button>
+          </div>
+          <div class="feedback" id="feedback"></div>
+          <div class="actions-row">
+            <button class="btn" id="hintBtn">💡 Pista</button>
+            <div class="actions-right">
+              <button class="btn" id="resetBtn">Reiniciar</button>
+              <button class="btn primary" id="nextBtn">Siguiente →</button>
+            </div>
+          </div>
+          <div class="progress-wrap"><div class="progress-fill" id="progressFill"></div></div>
+        </div>
+        <div class="shortcuts">
+          <span class="shortcut"><kbd>Enter</kbd> Comprobar / Siguiente</span>
+          <span class="shortcut"><kbd>Ctrl</kbd>+<kbd>H</kbd> Pista</span>
+        </div>
+        <div class="card" id="missedCard" style="display:none;">
+          <div class="card-title">Errores recientes</div>
+          <div class="missed-list" id="missedList"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- TEACHER DASHBOARD -->
+<div class="screen" id="screenTeacher">
+  <div class="dash-wrap">
+    <div class="dash-header">
+      <h1>🎓 Panel del profesor</h1>
+      <button class="btn" id="refreshDash">↻ Actualizar</button>
+      <button class="btn" id="exportCsv">📥 Exportar CSV</button>
+      <button class="btn" id="backToLogin">← Volver</button>
+    </div>
+    <div class="dash-summary" id="dashSummary"></div>
+    <div class="tab-bar">
+      <button class="tab-btn active" data-tab="students">Alumnos</button>
+      <button class="tab-btn" data-tab="weakVerbs">Verbos difíciles</button>
+    </div>
+    <div id="tabStudents">
+      <div class="table-wrap">
+        <table id="studentsTable">
+          <thead><tr>
+            <th style="width:30px;"></th>
+            <th data-sort="name">Alumno ↕</th>
+            <th data-sort="sessions">Sesiones ↕</th>
+            <th data-sort="total">Preguntas ↕</th>
+            <th data-sort="pct">Acierto ↕</th>
+            <th data-sort="streak">Mejor racha ↕</th>
+            <th>Verbos difíciles</th>
+            <th data-sort="last">Última sesión ↕</th>
+          </tr></thead>
+          <tbody id="studentsBody"></tbody>
+        </table>
+      </div>
+      <div class="dash-empty" id="dashEmpty" style="display:none;">
+        <h3>Sin datos todavía</h3>
+        <p>Cuando tus alumnos practiquen, su progreso aparecerá aquí automáticamente.</p>
+      </div>
+    </div>
+    <div id="tabWeakVerbs" style="display:none;">
+      <div class="table-wrap">
+        <table><thead><tr>
+          <th>Verbo</th><th>Errores totales</th><th>Alumnos afectados</th><th>Tiempos más fallados</th>
+        </tr></thead><tbody id="weakVerbsBody"></tbody></table>
+      </div>
+    </div>
+    <div style="margin-top:24px;text-align:center;">
+      <button class="btn danger" id="clearDataBtn">🗑 Borrar todos los datos</button>
+    </div>
+  </div>
+</div>
+
+<script>
+(() => {
+  /* ── CONJUGATION ENGINE ─────────────── */
+  const P6=["yo","tú","él/ella","nosotros","vosotros","ellos"];
+  const HAB=new Map([[["indicativo","presente"]+"",["he","has","ha","hemos","habéis","han"]],[["indicativo","imperfecto"]+"",["había","habías","había","habíamos","habíais","habían"]],[["indicativo","preterito"]+"",["hube","hubiste","hubo","hubimos","hubisteis","hubieron"]],[["indicativo","futuro"]+"",["habré","habrás","habrá","habremos","habréis","habrán"]],[["indicativo","condicional"]+"",["habría","habrías","habría","habríamos","habríais","habrían"]],[["subjuntivo","presente"]+"",["haya","hayas","haya","hayamos","hayáis","hayan"]],[["subjuntivo","imperfecto_ra"]+"",["hubiera","hubieras","hubiera","hubiéramos","hubierais","hubieran"]],[["subjuntivo","imperfecto_se"]+"",["hubiese","hubieses","hubiese","hubiésemos","hubieseis","hubiesen"]],[["subjuntivo","futuro"]+"",["hubiere","hubieres","hubiere","hubiéremos","hubiereis","hubieren"]]]);
+  const R={ar:{"indicativo|presente":["o","as","a","amos","áis","an"],"indicativo|imperfecto":["aba","abas","aba","ábamos","abais","aban"],"indicativo|preterito":["é","aste","ó","amos","asteis","aron"],"indicativo|futuro":["aré","arás","ará","aremos","aréis","arán"],"indicativo|condicional":["aría","arías","aría","aríamos","aríais","arían"],"subjuntivo|presente":["e","es","e","emos","éis","en"],"subjuntivo|imperfecto_ra":["ara","aras","ara","áramos","arais","aran"],"subjuntivo|imperfecto_se":["ase","ases","ase","ásemos","aseis","asen"],"subjuntivo|futuro":["are","ares","are","áremos","areis","aren"],imperativo:{"tú":"a","él/ella":"e","nosotros":"emos","vosotros":"ad","ellos":"en"}},er:{"indicativo|presente":["o","es","e","emos","éis","en"],"indicativo|imperfecto":["ía","ías","ía","íamos","íais","ían"],"indicativo|preterito":["í","iste","ió","imos","isteis","ieron"],"indicativo|futuro":["eré","erás","erá","eremos","eréis","erán"],"indicativo|condicional":["ería","erías","ería","eríamos","eríais","erían"],"subjuntivo|presente":["a","as","a","amos","áis","an"],"subjuntivo|imperfecto_ra":["iera","ieras","iera","iéramos","ierais","ieran"],"subjuntivo|imperfecto_se":["iese","ieses","iese","iésemos","ieseis","iesen"],"subjuntivo|futuro":["iere","ieres","iere","iéremos","iereis","ieren"],imperativo:{"tú":"e","él/ella":"a","nosotros":"amos","vosotros":"ed","ellos":"an"}},ir:{"indicativo|presente":["o","es","e","imos","ís","en"],"indicativo|imperfecto":["ía","ías","ía","íamos","íais","ían"],"indicativo|preterito":["í","iste","ió","imos","isteis","ieron"],"indicativo|futuro":["iré","irás","irá","iremos","iréis","irán"],"indicativo|condicional":["iría","irías","iría","iríamos","iríais","irían"],"subjuntivo|presente":["a","as","a","amos","áis","an"],"subjuntivo|imperfecto_ra":["iera","ieras","iera","iéramos","ierais","ieran"],"subjuntivo|imperfecto_se":["iese","ieses","iese","iésemos","ieseis","iesen"],"subjuntivo|futuro":["iere","ieres","iere","iéremos","iereis","ieren"],imperativo:{"tú":"e","él/ella":"a","nosotros":"amos","vosotros":"id","ellos":"an"}}};
+  const cI=[["perfecto_compuesto",["indicativo","presente"]],["pluscuamperfecto",["indicativo","imperfecto"]],["anterior",["indicativo","preterito"]],["futuro_perfecto",["indicativo","futuro"]],["condicional_perfecto",["indicativo","condicional"]]];
+  const cS=[["perfecto_compuesto",["subjuntivo","presente"]],["pluscuamperfecto_ra",["subjuntivo","imperfecto_ra"]],["pluscuamperfecto_se",["subjuntivo","imperfecto_se"]],["futuro_perfecto",["subjuntivo","futuro"]]];
+
+  const tv=v=>{v=v.trim().toLowerCase();if(v.endsWith("ar"))return"ar";if(v.endsWith("er"))return"er";if(v.endsWith("ir"))return"ir";return null;};
+  const part=v=>v.endsWith("ar")?v.slice(0,-2)+"ado":v.slice(0,-2)+"ido";
+  const cjS=(v,m,t,i)=>v.slice(0,-2)+R[tv(v)][`${m}|${t}`][i];
+  const cjI=(v,p)=>v.slice(0,-2)+R[tv(v)].imperativo[p];
+  const cjC=(v,m,tc,i)=>{const p=part(v);const l=m==="indicativo"?cI:cS;const it=l.find(x=>x[0]===tc);return`${HAB.get(it[1]+"")?.[i]} ${p}`;};
+
+  const nS=s=>(s??"").toString().trim().replace(/\s+/g," ").toLowerCase();
+  const nL=s=>nS(s).normalize("NFD").replace(/[\u0300-\u036f]/g,"");
+
+  /* ── STORAGE ────────────────────────── */
+  const SK="verbos_progress_v2";
+  const loadAll=()=>{try{return JSON.parse(localStorage.getItem(SK))||{};}catch{return{};}};
+  const saveAll=d=>localStorage.setItem(SK,JSON.stringify(d));
+  const getSD=n=>{const a=loadAll();if(!a[n])a[n]={sessions:[],totalQ:0,totalOk:0,bestStreak:0,errors:{}};return a[n];};
+  const saveSD=(n,d)=>{const a=loadAll();a[n]=d;saveAll(a);};
+
+  /* ── SCREENS ────────────────────────── */
+  const scr={login:document.getElementById("screenLogin"),practice:document.getElementById("screenPractice"),teacher:document.getElementById("screenTeacher")};
+  const show=n=>{Object.values(scr).forEach(s=>s.classList.remove("active"));scr[n].classList.add("active");};
+
+  /* ── DOM REFS ───────────────────────── */
+  const $=id=>document.getElementById(id);
+  const verbsTA=$("verbs"),loadBtn=$("loadBtn"),verbSelect=$("verbSelect"),inclComp=$("inclComp"),subVar=$("subVar"),strictAcc=$("strictAccent"),accentNote=$("accentNote"),qBadge=$("qBadge"),qText=$("qText"),qDetail=$("qDetail"),ansEl=$("answer"),fbEl=$("feedback"),checkBtn=$("checkBtn"),nextBtn=$("nextBtn"),resetBtn=$("resetBtn"),hintBtn=$("hintBtn"),scoreVal=$("scoreVal"),streakVal=$("streakVal"),pctVal=$("pctVal"),progressFill=$("progressFill"),missedCard=$("missedCard"),missedList=$("missedList"),studentNameEl=$("studentName"),sessionInfoEl=$("sessionInfo"),logoutBtn=$("logoutBtn"),loginName=$("loginName"),loginBtn=$("loginBtn"),teacherBtn=$("teacherBtn");
+
+  /* ── STATE ──────────────────────────── */
+  let verbos=[],total=0,ok=0,streak=0,bestStreak=0,current=null,hintLevel=0,answered=false,missed=[];
+  let currentStudent=null,sessionStart=null;
+
+  const esc=s=>s.replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;");
+  const updateStats=()=>{scoreVal.textContent=`${ok}/${total}`;streakVal.textContent=streak;pctVal.textContent=total>0?Math.round(ok/total*100)+"%":"—";progressFill.style.width=total>0?Math.round(ok/total*100)+"%":"0%";};
+  const normVerbs=()=>{const l=verbsTA.value.split(/\r?\n/).map(s=>s.trim().toLowerCase()).filter(Boolean);const c=[],se=new Set();for(const v of l){if(!tv(v)||se.has(v))continue;se.add(v);c.push(v);}if(!c.length)c.push("amar","temer","partir");return c.sort();};
+  const fillSel=()=>{verbSelect.innerHTML="";for(const v of verbos){const o=document.createElement("option");o.value=v;o.textContent=v;verbSelect.appendChild(o);}};
+  const getModo=()=>document.querySelector('input[name="modo"]:checked')?.value??"indicativo";
+  const pickV=()=>verbSelect.selectedOptions?.[0]?.value||verbos[Math.floor(Math.random()*verbos.length)];
+  const updateAN=()=>{if(strictAcc.checked){accentNote.className="accent-mode-note strict";accentNote.innerHTML='⚠️ Los acentos cuentan: <strong>habló ≠ hablo</strong>';}else{accentNote.className="accent-mode-note";accentNote.innerHTML='ℹ️ Acentos no se evalúan (modo relajado)';}};
+  const addMissed=(q,g,c)=>{missed.unshift({q,gave:g,correct:c});if(missed.length>20)missed.pop();renderMissed();};
+  const renderMissed=()=>{if(!missed.length){missedCard.style.display="none";return;}missedCard.style.display="block";missedList.innerHTML=missed.map(m=>`<div class="missed-item"><span class="missed-q">${esc(m.q)}</span><span class="missed-a">${esc(m.gave)}</span><span class="missed-arrow">→</span><span class="missed-c">${esc(m.correct)}</span></div>`).join("");};
+
+  function startPractice(name){
+    currentStudent=name;sessionStart=Date.now();
+    total=0;ok=0;streak=0;bestStreak=0;current=null;answered=false;hintLevel=0;missed=[];
+    studentNameEl.textContent=name;sessionInfoEl.textContent="Sesión activa";
+    updateStats();renderMissed();fbEl.className="feedback";fbEl.textContent="";
+    qText.innerHTML='Pulsa <strong>Siguiente</strong> para empezar.';qDetail.textContent="";qBadge.style.display="none";
+    ansEl.value="";ansEl.classList.remove("correct","wrong");
+    verbos=normVerbs();fillSel();show("practice");ansEl.focus();
+  }
+
+  function saveSession(){
+    if(!currentStudent||total===0)return;
+    const d=getSD(currentStudent);
+    d.sessions.push({date:new Date().toISOString(),total,ok,pct:Math.round(ok/total*100),bestStreak,duration:Math.round((Date.now()-sessionStart)/1000),missed:missed.map(m=>({q:m.q,gave:m.gave,correct:m.correct}))});
+    d.totalQ+=total;d.totalOk+=ok;
+    if(bestStreak>d.bestStreak)d.bestStreak=bestStreak;
+    for(const m of missed){d.errors[m.q]=(d.errors[m.q]||0)+1;}
+    saveSD(currentStudent,d);
+    // Reset counters so we don't double-count
+    total=0;ok=0;streak=0;bestStreak=0;missed=[];sessionStart=Date.now();
+  }
+
+  /* ── QUESTION ───────────────────────── */
+  function nextQ(){
+    fbEl.className="feedback";fbEl.textContent="";ansEl.value="";ansEl.classList.remove("correct","wrong");ansEl.focus();hintLevel=0;answered=false;
+    const modo=getModo(),verbo=pickV(),t=tv(verbo);
+    if(!t){qText.textContent="Verbo no válido.";qBadge.style.display="none";qDetail.textContent="";current=null;return;}
+    qBadge.style.display="inline-block";qBadge.className="q-badge "+(modo==="indicativo"?"ind":modo==="subjuntivo"?"sub":"imp");qBadge.textContent=modo;
+
+    if(modo==="imperativo"){
+      const ps=["tú","él/ella","nosotros","vosotros","ellos"],pl=ps[Math.floor(Math.random()*ps.length)],co=cjI(verbo,pl);
+      current={modo,verbo,personaLabel:pl,correcta:co,label:`${verbo}, imperativo, ${pl}`};
+      qText.innerHTML=`Conjuga <span class="verb-hl">${esc(verbo)}</span> — «${esc(pl)}»`;qDetail.textContent="Imperativo";return;
+    }
+    const idx=Math.floor(Math.random()*6),per=P6[idx],ops=[];
+    if(modo==="indicativo"){
+      ops.push(["s","presente","Presente"],["s","imperfecto","Pret. imperfecto"],["s","preterito","Pret. perfecto simple"],["s","futuro","Futuro simple"],["s","condicional","Condicional simple"]);
+      if(inclComp.checked)ops.push(["c","perfecto_compuesto","Pret. perfecto compuesto"],["c","pluscuamperfecto","Pret. pluscuamperfecto"],["c","anterior","Pret. anterior"],["c","futuro_perfecto","Futuro perfecto"],["c","condicional_perfecto","Condicional perfecto"]);
+    }else{
+      ops.push(["s","presente","Presente"],["s","futuro","Futuro"],["s","imperfecto_ra","Pret. imperfecto (-ra)"]);
+      if(subVar.checked)ops.push(["s","imperfecto_se","Pret. imperfecto (-se)"]);
+      if(inclComp.checked){ops.push(["c","perfecto_compuesto","Pret. perfecto compuesto"],["c","futuro_perfecto","Futuro perfecto"],["c","pluscuamperfecto_ra","Pret. pluscuamperfecto (-ra)"]);if(subVar.checked)ops.push(["c","pluscuamperfecto_se","Pret. pluscuamperfecto (-se)"]);}
+    }
+    const[tp,tk,tl]=ops[Math.floor(Math.random()*ops.length)];
+    const co=tp==="s"?cjS(verbo,modo,tk,idx):cjC(verbo,modo,tk,idx);
+    current={modo,verbo,tipo:tp,tiempoKey:tk,tiempoLabel:tl,idx,persona:per,correcta:co,label:`${verbo}, ${tl}, ${per}`};
+    qText.innerHTML=`Conjuga <span class="verb-hl">${esc(verbo)}</span> — «${esc(per)}»`;
+    qDetail.textContent=`${modo.charAt(0).toUpperCase()+modo.slice(1)} · ${tl}`;
+  }
+
+  function checkAns(){
+    if(!current||answered)return;const u=ansEl.value.trim();if(!u)return;
+    answered=true;total+=1;
+    const nm=strictAcc.checked?nS:nL;
+    if(nm(u)===nm(current.correcta)){ok+=1;streak+=1;if(streak>bestStreak)bestStreak=streak;fbEl.className="feedback show ok";fbEl.textContent=streak>2?`✓ ¡Correcto! Racha de ${streak} 🔥`:"✓ ¡Correcto!";ansEl.classList.add("correct");}
+    else{streak=0;fbEl.className="feedback show bad";fbEl.innerHTML=`✗ Incorrecto. Respuesta: <span class="correct-answer">${esc(current.correcta)}</span>`;ansEl.classList.add("wrong");addMissed(current.label,u,current.correcta);}
+    updateStats();
+    if(total%10===0)saveSession();
+  }
+
+  function showHint(){
+    if(!current||answered)return;hintLevel++;
+    const ch=[...current.correcta];
+    ansEl.value=ch.map((c,i)=>i<hintLevel?c:(c===" "?" ":"_")).join("");
+    ansEl.focus();ansEl.setSelectionRange(ansEl.value.length,ansEl.value.length);
+  }
+
+  function resetPractice(){
+    saveSession();sessionStart=Date.now();
+    total=0;ok=0;streak=0;bestStreak=0;current=null;answered=false;hintLevel=0;missed=[];
+    updateStats();renderMissed();fbEl.className="feedback";fbEl.textContent="";
+    qText.innerHTML='Pulsa <strong>Siguiente</strong> para empezar.';qDetail.textContent="";qBadge.style.display="none";
+    ansEl.value="";ansEl.classList.remove("correct","wrong");
+  }
+
+  /* ── EVENTS ─────────────────────────── */
+  document.querySelectorAll(".accent-btn").forEach(b=>{b.addEventListener("click",()=>{const c=b.dataset.char,p=ansEl.selectionStart??ansEl.value.length;ansEl.value=ansEl.value.slice(0,p)+c+ansEl.value.slice(p);ansEl.focus();ansEl.setSelectionRange(p+1,p+1);});});
+  loadBtn.addEventListener("click",()=>{verbos=normVerbs();fillSel();});
+  document.querySelectorAll('input[name="modo"]').forEach(r=>r.addEventListener("change",nextQ));
+  inclComp.addEventListener("change",nextQ);subVar.addEventListener("change",nextQ);strictAcc.addEventListener("change",updateAN);
+  checkBtn.addEventListener("click",checkAns);nextBtn.addEventListener("click",nextQ);resetBtn.addEventListener("click",resetPractice);hintBtn.addEventListener("click",showHint);
+  verbSelect.addEventListener("dblclick",()=>{verbSelect.selectedIndex=-1;});
+  loginBtn.addEventListener("click",()=>{const n=loginName.value.trim();if(!n){loginName.focus();return;}startPractice(n);});
+  loginName.addEventListener("keydown",e=>{if(e.key==="Enter"){e.preventDefault();loginBtn.click();}});
+  teacherBtn.addEventListener("click",()=>{show("teacher");renderDash();});
+  logoutBtn.addEventListener("click",()=>{saveSession();currentStudent=null;show("login");loginName.value="";loginName.focus();});
+
+  document.addEventListener("keydown",e=>{
+    if(scr.practice.classList.contains("active")&&document.activeElement!==verbsTA){
+      if(e.key==="Enter"&&!e.ctrlKey&&!e.metaKey){e.preventDefault();if(answered)nextQ();else checkAns();}
+      if(e.key==="Enter"&&(e.ctrlKey||e.metaKey)){e.preventDefault();nextQ();}
+      if((e.key==="h"||e.key==="H")&&(e.ctrlKey||e.metaKey)){e.preventDefault();showHint();}
+    }
+    if(scr.login.classList.contains("active")&&e.key==="Enter")loginBtn.click();
+  });
+  window.addEventListener("beforeunload",()=>{if(currentStudent)saveSession();});
+
+  verbos=normVerbs();fillSel();updateStats();updateAN();
+
+  /* ── TEACHER DASHBOARD ──────────────── */
+  const studentsBody=$("studentsBody"),dashSummary=$("dashSummary"),dashEmpty=$("dashEmpty"),weakVerbsBody=$("weakVerbsBody");
+  let sortCol="name",sortDir="asc";
+
+  function renderDash(){
+    const all=loadAll(),names=Object.keys(all);
+    let tSes=0,tQ=0,tOk=0;
+    for(const n of names){const d=all[n];tSes+=d.sessions.length;tQ+=d.totalQ;tOk+=d.totalOk;}
+    const avg=tQ>0?Math.round(tOk/tQ*100):0;
+    dashSummary.innerHTML=`<div class="dash-stat"><div class="ds-label">Alumnos</div><div class="ds-value">${names.length}</div></div><div class="dash-stat"><div class="ds-label">Sesiones</div><div class="ds-value">${tSes}</div></div><div class="dash-stat"><div class="ds-label">Preguntas</div><div class="ds-value">${tQ.toLocaleString()}</div></div><div class="dash-stat"><div class="ds-label">Acierto medio</div><div class="ds-value">${avg}%</div></div>`;
+
+    if(!names.length){dashEmpty.style.display="block";$("studentsTable").parentElement.style.display="none";return;}
+    dashEmpty.style.display="none";$("studentsTable").parentElement.style.display="block";
+
+    const rows=names.map(name=>{
+      const d=all[name],pct=d.totalQ>0?Math.round(d.totalOk/d.totalQ*100):0;
+      const last=d.sessions.length?d.sessions[d.sessions.length-1].date:null;
+      const ek=Object.entries(d.errors||{}).sort((a,b)=>b[1]-a[1]).slice(0,5);
+      const wv=[...new Set(ek.map(([k])=>k.split(",")[0].trim()))].slice(0,3);
+      return{name,sessions:d.sessions.length,total:d.totalQ,ok:d.totalOk,pct,streak:d.bestStreak,weakVerbs:wv,last,data:d};
+    });
+    rows.sort((a,b)=>{let va=a[sortCol],vb=b[sortCol];if(sortCol==="name"||sortCol==="last"){va=va||"";vb=vb||"";return sortDir==="asc"?va.localeCompare(vb):vb.localeCompare(va);}return sortDir==="asc"?(va-vb):(vb-va);});
+
+    studentsBody.innerHTML=rows.map((r,i)=>{
+      const pc=r.pct>=70?"high":r.pct>=40?"mid":"low";
+      const ls=r.last?fmtD(r.last):"—";
+      const wh=r.weakVerbs.length?r.weakVerbs.map(v=>`<span class="weak-verb">${esc(v)}</span>`).join(""):'<span style="color:var(--text-muted);font-size:12px;">—</span>';
+      return`<tr><td><button class="expand-btn" data-row="${i}">▶</button></td><td><strong>${esc(r.name)}</strong></td><td>${r.sessions}</td><td>${r.total}</td><td><div class="pct-bar"><div class="pct-bar-track"><div class="pct-bar-fill ${pc}" style="width:${r.pct}%"></div></div><span class="pct-label">${r.pct}%</span></div></td><td>${r.streak}</td><td>${wh}</td><td style="font-size:12px;color:var(--text-muted);">${ls}</td></tr><tr class="detail-row" id="detail-${i}" style="display:none;"><td colspan="8"><div class="detail-content">${detailHTML(r)}</div></td></tr>`;
+    }).join("");
+
+    studentsBody.querySelectorAll(".expand-btn").forEach(b=>{
+      b.addEventListener("click",()=>{const row=$("detail-"+b.dataset.row);const s=row.style.display!=="none";row.style.display=s?"none":"table-row";b.classList.toggle("open",!s);b.textContent=s?"▶":"▼";});
+    });
+    renderWV(all);
+  }
+
+  function detailHTML(r){
+    const rec=r.data.sessions.slice(-10).reverse();
+    const sH=rec.length?rec.map(s=>`<div class="session-item"><span class="session-date">${fmtD(s.date)}</span><span>${s.ok}/${s.total} (${s.pct}%)${s.duration?" · "+fmtDur(s.duration):""}</span></div>`).join(""):'<div style="color:var(--text-muted);font-size:12px;">Sin sesiones</div>';
+    const te=Object.entries(r.data.errors||{}).sort((a,b)=>b[1]-a[1]).slice(0,8);
+    const eH=te.length?te.map(([k,v])=>`<div class="session-item"><span>${esc(k)}</span><span style="color:var(--red);font-weight:600;">${v}×</span></div>`).join(""):'<div style="color:var(--text-muted);font-size:12px;">Sin errores 🎉</div>';
+    return`<div class="detail-grid"><div class="detail-section"><h4>Últimas sesiones</h4>${sH}</div><div class="detail-section"><h4>Errores frecuentes</h4>${eH}</div></div>`;
+  }
+
+  function renderWV(all){
+    const ve={};
+    for(const[name,data]of Object.entries(all)){for(const[key,count]of Object.entries(data.errors||{})){const p=key.split(",").map(s=>s.trim()),verb=p[0],tense=p[1]||"?";if(!ve[verb])ve[verb]={count:0,students:new Set(),tenses:{}};ve[verb].count+=count;ve[verb].students.add(name);ve[verb].tenses[tense]=(ve[verb].tenses[tense]||0)+count;}}
+    const sorted=Object.entries(ve).sort((a,b)=>b[1].count-a[1].count);
+    weakVerbsBody.innerHTML=sorted.length?sorted.map(([v,d])=>{const tt=Object.entries(d.tenses).sort((a,b)=>b[1]-a[1]).slice(0,3).map(([t,c])=>`${t} (${c}×)`).join(", ");return`<tr><td><strong>${esc(v)}</strong></td><td>${d.count}</td><td>${d.students.size}</td><td style="font-size:12px;color:var(--text-muted);">${tt}</td></tr>`;}).join(""):'<tr><td colspan="4" style="text-align:center;color:var(--text-muted);padding:24px;">Sin errores</td></tr>';
+  }
+
+  const fmtD=iso=>{const d=new Date(iso);return`${d.getDate().toString().padStart(2,"0")}/${(d.getMonth()+1).toString().padStart(2,"0")} ${d.getHours().toString().padStart(2,"0")}:${d.getMinutes().toString().padStart(2,"0")}`;};
+  const fmtDur=s=>s<60?`${s}s`:`${Math.floor(s/60)}m${s%60>0?" "+(s%60)+"s":""}`;
+
+  $("studentsTable").querySelector("thead").addEventListener("click",e=>{const th=e.target.closest("th[data-sort]");if(!th)return;const c=th.dataset.sort;if(sortCol===c)sortDir=sortDir==="asc"?"desc":"asc";else{sortCol=c;sortDir="asc";}renderDash();});
+  document.querySelectorAll(".tab-btn").forEach(b=>{b.addEventListener("click",()=>{document.querySelectorAll(".tab-btn").forEach(x=>x.classList.remove("active"));b.classList.add("active");$("tabStudents").style.display=b.dataset.tab==="students"?"block":"none";$("tabWeakVerbs").style.display=b.dataset.tab==="weakVerbs"?"block":"none";});});
+  $("refreshDash").addEventListener("click",renderDash);
+  $("backToLogin").addEventListener("click",()=>show("login"));
+
+  $("exportCsv").addEventListener("click",()=>{
+    const all=loadAll(),names=Object.keys(all);if(!names.length){alert("No hay datos.");return;}
+    let csv="Alumno,Sesiones,Preguntas,Aciertos,Porcentaje,Mejor racha,Última sesión\n";
+    for(const n of names.sort()){const d=all[n];const p=d.totalQ>0?Math.round(d.totalOk/d.totalQ*100):0;const l=d.sessions.length?d.sessions[d.sessions.length-1].date:"";csv+=`"${n}",${d.sessions.length},${d.totalQ},${d.totalOk},${p}%,${d.bestStreak},"${l}"\n`;}
+    csv+="\nAlumno,Conjugación,Errores\n";
+    for(const n of names.sort()){const d=all[n];for(const[k,v]of Object.entries(d.errors||{}).sort((a,b)=>b[1]-a[1]))csv+=`"${n}","${k}",${v}\n`;}
+    const blob=new Blob(["\uFEFF"+csv],{type:"text/csv;charset=utf-8;"});const url=URL.createObjectURL(blob);const a=document.createElement("a");a.href=url;a.download=`verbos_progreso_${new Date().toISOString().slice(0,10)}.csv`;a.click();URL.revokeObjectURL(url);
+  });
+
+  $("clearDataBtn").addEventListener("click",()=>{if(confirm("¿Borrar TODOS los datos de progreso? No se puede deshacer.")){localStorage.removeItem(SK);renderDash();}});
+})();
+</script>
+</body>
+</html>
